@@ -1,0 +1,57 @@
+% SMART STUDY TRACKER IN PROLOG (OneCompiler Version)
+
+% subject(Name)
+subject(math).
+subject(science).
+
+% task(Subject, TaskName, Deadline, Status)
+task(math, homework1, '5_april', pending).
+task(science, diagram_practice, '3_april', completed).
+
+
+% Show all tasks
+show_tasks :-
+    task(S, T, D, Status),
+    write('Subject: '), write(S),
+    write(' | Task: '), write(T),
+    write(' | Deadline: '), write(D),
+    write(' | Status: '), write(Status), nl,
+    fail.
+show_tasks.
+
+
+% Count pending tasks
+count_pending(N) :-
+    findall(T, task(_, T, _, pending), List),
+    length(List, N).
+
+
+% Count completed tasks
+count_completed(N) :-
+    findall(T, task(_, T, _, completed), List),
+    length(List, N).
+
+
+% Study progress calculation
+progress :-
+    count_completed(C),
+    count_pending(P),
+    Total is C + P,
+    Total > 0,
+    Percentage is (C * 100) / Total,
+    write('Completed Tasks: '), write(C), nl,
+    write('Pending Tasks: '), write(P), nl,
+    write('Progress: '), write(Percentage), write('%'), nl.
+
+
+% MAIN PROGRAM (runs automatically in OneCompiler)
+main :-
+    write('SMART STUDY TRACKER'), nl,
+    write('--------------------'), nl,
+    show_tasks,
+    nl,
+    progress.
+
+
+% Tell Prolog to start from main
+:- initialization(main).
